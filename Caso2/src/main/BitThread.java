@@ -9,6 +9,16 @@ public class BitThread extends Thread {
 	}
 	
 	public void run() {
-		
+		while(true) {
+			try {
+				if ( m.getFinished() ) {
+					break;
+				}
+				m.updateReferences();
+				sleep(20);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
