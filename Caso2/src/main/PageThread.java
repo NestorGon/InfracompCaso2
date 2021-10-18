@@ -17,6 +17,9 @@ public class PageThread extends Thread {
 	public void run() {
 		
 		for ( int i = 0; i < cantReferencias; i++ ) {
+			if ( i == 300) {
+				System.out.print("");
+			}
 			try {
 				String[] temp = bf.readLine().split(",");
 				int key = Integer.parseInt(temp[0]);
@@ -27,6 +30,6 @@ public class PageThread extends Thread {
 			}	
 		}
 		m.isFinished();
-		System.out.println("Fallos: " + m.getFallos());
+		System.out.println(m.getFallos());
 	}
 }

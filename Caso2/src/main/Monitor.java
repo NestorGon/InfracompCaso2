@@ -28,7 +28,6 @@ public class Monitor {
 	}
 	
 	public void readReference( Integer key, boolean m ) {
-		System.out.println("Reading " + key + (m?"m":"r"));
 		int pageFrame, mBit, rBit;
 		synchronized (this) {
 			pageFrame = tp.get(key)[0];
@@ -36,16 +35,12 @@ public class Monitor {
 			mBit = tp.get(key)[2];
 		}
 		if ( pageFrame == -1 ) {
-			System.out.println(key + (m?"m":"r") + " not in RAM");
 			if ( occupied != ram.length ) {
-				System.out.println("Free space in RAM for " + key + (m?"m":"r") + " at " + occupied);
 				ram[occupied] = key;
 				updateBit( key, occupied, m );
 				occupied++;
 			} else {
-				System.out.println("No free space in RAM for " + key + (m?"m":"r"));
 				int remPos = NRU();
-				System.out.println("Made space in RAM for " + key + (m?"m":"r") + " at " + remPos);
 				int posVirtual = ram[remPos];
 				ram[remPos] = key;
 				updateBit(key, remPos, m);
@@ -53,21 +48,18 @@ public class Monitor {
 			}
 			fallos++;
 		} else if ( m && mBit == 0 ) {
-			System.out.println("Update modify bit for " + key + (m?"m":"r"));
 			synchronized (this) {
 				Integer[] temp = tp.get(key);
 				temp[2] = 1;
 				tp.put(key, temp);
 			}
 		} else if ( !m && rBit == 0 ) {
-			System.out.println("Update reference bit for " + key + (m?"m":"r"));
 			synchronized (this) {
 				Integer[] temp = tp.get(key);
 				temp[1] = 1;
 				tp.put(key, temp);
 			}
 		}
-		System.out.println("Read " + key + (m?"m":"r") + "\n");
 	}
 	
 	public synchronized Integer NRU() {
@@ -120,7 +112,6 @@ public class Monitor {
 	}
 	
 	public synchronized void updateReferences() {
-		System.out.println("Updating references clock cycle...");
 		for (Integer key: tp.keySet()) {
 			Integer[] temp = tp.get(key);
 			temp[1] = 0;
@@ -133,7 +124,6 @@ public class Monitor {
 	}
 	
 	public void isFinished() {
-		System.out.println("Is finished");
 		finished = true;
 	}
 	public boolean getFinished() {
@@ -164,7 +154,6 @@ public class Monitor {
 			while ( !m.getFinished() ) {
 				System.out.print("");
 			}
-			System.out.println("FINISHED");
 			try {
 				bf.close();
 				in.close();
